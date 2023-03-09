@@ -10,4 +10,4 @@
 - добавить новый функционал
 ## Ссылка на GitHub Pages:
 
-- 
+- https://stefaniafrolovafrolov.github.io/mesto-react/

@@ -10,8 +10,8 @@ function Card(card) {
       <button className="element__trash" type="button"></button>
       <img
         className="element__mask"
-        alt={card.name}
         src={card.link}
+        alt={card.name}
         onClick={handleCardClick}
       />
       <div className="element__group">

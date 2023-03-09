@@ -8,15 +8,16 @@ import ImagePopup from "./ImagePopup"
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
     React.useState(false)
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false)
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false)
+
   const [selectedCard, setSelectedCard] = React.useState({})
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false)
-    setIsEditAvatarPopupOpen(false)
     setIsAddPlacePopupOpen(false)
+    setIsEditAvatarPopupOpen(false)
     setSelectedCard({})
   }
 
@@ -26,15 +27,14 @@ function App() {
         <Header />
         <Main
           onEditProfile={setIsEditProfilePopupOpen}
-          onEditAvatar={setIsEditAvatarPopupOpen}
           onAddPlace={setIsAddPlacePopupOpen}
+          onEditAvatar={setIsEditAvatarPopupOpen}
           onCardClick={setSelectedCard}
         />
         <Footer />
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
         <PopupWithForm
-          name="profile"
+          name="popupEditProfile"
           title="Редактировать профиль"
           buttonText="Сохранить"
           isOpen={isEditProfilePopupOpen}
@@ -43,12 +43,12 @@ function App() {
           <label className="popup__label">
             <input
               className="popup__input popup__input_type_name"
+              id="nameInput"
+              name="name"
               type="text"
               placeholder="Имя"
               minLength="2"
               maxLength="40"
-              name="name"
-              id="nameInput"
               required
             />
             <span className="nameInput-error error" />
@@ -56,12 +56,12 @@ function App() {
           <label className="popup__label">
             <input
               className="popup__input popup__input_type_job"
+              id="jobInput"
+              name="about"
               type="text"
               placeholder="О себе"
               minLength="2"
               maxLength="200"
-              name="about"
-              id="jobInput"
               required
             />
             <span className="jobInput-error error" />
@@ -69,7 +69,7 @@ function App() {
         </PopupWithForm>
 
         <PopupWithForm
-          name="photo"
+          name="popupNewPlace"
           title="Новое место"
           buttonText="Создать"
           isOpen={isAddPlacePopupOpen}
@@ -78,12 +78,12 @@ function App() {
           <label className="popup__label">
             <input
               className="popup__input popup__input_type_image-name"
+              id="nameInputNew"
+              name="name"
               type="text"
               placeholder="Название"
               minLength="2"
               maxLength="30"
-              name="name"
-              id="nameInputNew"
               required
             />
             <span className="nameInputNew-error error" />
@@ -91,10 +91,10 @@ function App() {
           <label className="popup__label">
             <input
               className="popup__input popup__input_type_image-link"
+              id="linkInputNew"
+              name="link"
               type="url"
               placeholder="Ссылка на картинку"
-              name="link"
-              id="linkInputNew"
               required
             />
             <span className="linkInputNew-error error" />
@@ -102,13 +102,13 @@ function App() {
         </PopupWithForm>
 
         <PopupWithForm
-          name="confirm"
+          name="popupConfirmation"
           title="Вы уверены?"
           buttonText="Да"
         ></PopupWithForm>
 
         <PopupWithForm
-          name="avatar"
+          name="popupEditAvatar"
           title="Обновить аватар"
           buttonText="Сохранить"
           isOpen={isEditAvatarPopupOpen}
@@ -116,9 +116,9 @@ function App() {
         >
           <label className="popup__label">
             <input
-              name="avatar"
               className="popup__input popup__input_type_link-avatar"
               id="nameInputAvatar"
+              name="avatar"
               type="url"
               placeholder="Введите ссылку URL"
               required
@@ -126,6 +126,7 @@ function App() {
             <span className="nameInputAvatar-error error" />
           </label>
         </PopupWithForm>
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
     </div>
   )

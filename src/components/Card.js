@@ -1,13 +1,36 @@
-import React from "react"
+import { useContext } from "react"
+import CurrentUserContext from "../contexts/CurrentUserContext"
 
-function Card(card) {
+function Card({ card, onCardLike, onCardDelete, onCardClick }) {
+  const currentUser = useContext(CurrentUserContext)
+  const isLiked = card.likes.some((user) => user._id === currentUser._id)
+  const likeButtonClassName = `element__like-button ${
+    isLiked ? "element__like-button_active" : ""
+  }`
+  const isOwner = card.owner._id === currentUser._id
+  const deleteButtonClassName = `element__trash ${
+    isOwner ? "element__trash" : ""
+  }`
+
+  function handleLikeClick() {
+    onCardLike(card)
+  }
+
+  function handleDeleteClick() {
+    onCardDelete(card)
+  }
+
   function handleCardClick() {
-    card.onCardClick(card)
+    onCardClick(card)
   }
 
   return (
     <div className="element rotation">
-      <button className="element__trash" type="button"></button>
+      <button
+        className={deleteButtonClassName}
+        onClick={handleDeleteClick}
+        type="button"
+      ></button>
       <img
         className="element__mask"
         src={card.link}
@@ -17,7 +40,11 @@ function Card(card) {
       <div className="element__group">
         <h2 className="element__title">{card.name}</h2>
         <div className="element__container-like">
-          <button className="element__like-button" type="button"></button>
+          <button
+            className={likeButtonClassName}
+            onClick={handleLikeClick}
+            type="button"
+          ></button>
           <p className="element__count-like">{card.likes.length}</p>
         </div>
       </div>

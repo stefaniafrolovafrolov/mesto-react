@@ -25,7 +25,7 @@ function Card({ card, onCardLike, onCardDelete, onCardClick }) {
   }
 
   return (
-    <div className="element rotation">
+    <div className="element">
       <button
         className={deleteButtonClassName}
         onClick={handleDeleteClick}

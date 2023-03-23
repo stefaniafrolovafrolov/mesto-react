@@ -24,7 +24,7 @@ function App() {
     api
       .getRealUserInfo()
       .then((profileInfo) => setCurrentUser(profileInfo))
-      .catch((err) => console.log(err))
+      .catch((error) => console.log(`Ошибка: ${error}`))
 
     api
       .getInitialCards()
@@ -39,7 +39,7 @@ function App() {
           }))
         )
       })
-      .catch((err) => console.log(err))
+      .catch((error) => console.log(`Ошибка: ${error}`))
   }, [])
 
   function closeAllPopups() {
@@ -57,7 +57,7 @@ function App() {
         setCurrentUser(data)
         closeAllPopups()
       })
-      .catch((err) => console.log(err))
+      .catch((error) => console.log(`Ошибка: ${error}`))
       .finally(() => setIsLoading(false))
   }
 
@@ -69,7 +69,7 @@ function App() {
         setCurrentUser(data)
         closeAllPopups()
       })
-      .catch((err) => console.log(err))
+      .catch((error) => console.log(`Ошибка: ${error}`))
       .finally(() => setIsLoading(false))
   }
 
@@ -81,7 +81,7 @@ function App() {
         setCards([newCard, ...cards])
         closeAllPopups()
       })
-      .catch((err) => console.log(err))
+      .catch((error) => console.log(`Ошибка: ${error}`))
       .finally(() => setIsLoading(false))
   }
 
@@ -96,7 +96,7 @@ function App() {
             state.map((item) => (item._id === card._id ? newCard : item))
           )
         )
-        .catch((err) => console.log(err))
+        .catch((error) => console.log(`Ошибка: ${error}`))
     } else {
       api
         .addLike(card._id)
@@ -105,7 +105,7 @@ function App() {
             state.map((item) => (item._id === card._id ? newCard : item))
           )
         )
-        .catch((err) => console.log(err))
+        .catch((error) => console.log(`Ошибка: ${error}`))
     }
   }
 
@@ -115,7 +115,7 @@ function App() {
       .then(() =>
         setCards((state) => state.filter((item) => item._id !== card._id))
       )
-      .catch((err) => console.log(err))
+      .catch((error) => console.log(`Ошибка: ${error}`))
   }
 
   return (

@@ -9,7 +9,7 @@ function Card({ card, onCardLike, onCardDelete, onCardClick }) {
   }`
   const isOwner = card.owner._id === currentUser._id
   const deleteButtonClassName = `element__trash ${
-    isOwner ? "element__trash" : ""
+    isOwner ? "element__trash_active" : ""
   }`
 
   function handleLikeClick() {

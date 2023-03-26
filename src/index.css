@@ -25,7 +25,9 @@
 @import url("./blocks/elements/elements.css");
 
 @import url("./blocks/element/element.css");
+
 @import url("./blocks/element/__trash/element__trash.css");
+@import url("./blocks/element/active/element__trash_active.css");
 @import url("./blocks/element/__mask/element__mask.css");
 @import url("./blocks/element/__title/element__title.css");
 @import url("./blocks/element/__container-like/element__container-like.css");
@@ -59,6 +61,5 @@
 @import url("./blocks/popup/_type/popup__input_type_error.css");
 @import url("./blocks/popup/_disabled/popup__save_disabled.css");
 @import url("./blocks/popup/__save/_valid/popup__save_valid.css");
-
 
 @import url("./blocks/rotation/rotation.css");

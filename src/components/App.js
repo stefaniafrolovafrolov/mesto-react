@@ -6,7 +6,7 @@ import CurrentUserContext from "../contexts/CurrentUserContext"
 import EditProfilePopup from "./EditProfilePopup"
 import EditAvatarPopup from "./EditAvatarPopup"
 import AddPlacePopup from "./AddPlacePopup"
-import PopupWithForm from "./PopupWithForm"
+import PopupConfirmation from "./PopupConfirmation"
 import ImagePopup from "./ImagePopup"
 import api from "../utils/Api"
 import Footer from "./Footer"
@@ -15,6 +15,8 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
+  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(false)
+  const [deletedCard, setDeletedCard] = useState({})
   const [selectedCard, setSelectedCard] = useState({})
   const [currentUser, setCurrentUser] = useState({})
   const [isLoading, setIsLoading] = useState(false)
@@ -46,6 +48,8 @@ function App() {
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
+    setIsConfirmationPopupOpen(false)
+    setDeletedCard({})
     setSelectedCard({})
   }
 
@@ -111,12 +115,16 @@ function App() {
   }
 
   function handleCardDelete(card) {
+    setIsLoading(true)
     api
       .removeCard(card._id)
       .then(() =>
         setCards((state) => state.filter((item) => item._id !== card._id))
       )
+
       .catch((error) => console.log(`Ошибка: ${error}`))
+      .finally(() => setIsLoading(false))
+    closeAllPopups()
   }
 
   return (
@@ -128,7 +136,8 @@ function App() {
             onEditProfile={setIsEditProfilePopupOpen}
             onEditAvatar={setIsEditAvatarPopupOpen}
             onAddPlace={setIsAddPlacePopupOpen}
-            onCardDelete={handleCardDelete}
+            onConfirmationPopup={setIsConfirmationPopupOpen}
+            onDeletedCard={setDeletedCard}
             onCardClick={setSelectedCard}
             onCardLike={handleCardLike}
             cards={cards}
@@ -152,11 +161,13 @@ function App() {
             onClose={closeAllPopups}
             onLoading={isLoading}
           />
-          <PopupWithForm
-            name="popupConfirmation"
-            title="Вы уверены?"
-            buttonText="Да"
-          ></PopupWithForm>
+          <PopupConfirmation
+            onClose={closeAllPopups}
+            isOpen={isConfirmationPopupOpen}
+            onCardDelete={handleCardDelete}
+            onLoading={isLoading}
+            card={deletedCard}
+          />
 
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         </div>

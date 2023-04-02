@@ -1,4 +1,4 @@
-.popup {
+/*.popup {
   height: 100%;
   position: fixed;
   visibility: hidden;
@@ -11,6 +11,20 @@
   align-items: center;
   justify-content: center;
   display: flex;
+  z-index: 1;
+}*/
+.popup {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+  justify-content: center;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  transition: opacity visibility z-index 1s 1s 1s;
+  visibility: hidden;
+  width: 100%;
   z-index: 1;
 }
 

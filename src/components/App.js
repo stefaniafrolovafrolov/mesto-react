@@ -53,6 +53,13 @@ function App() {
     setSelectedCard({})
   }
 
+  function closeByOverlay(evt) {
+    if (evt.target === evt.currentTarget) {
+      console.log("gggggggggggg")
+      closeAllPopups();
+    }
+  }
+
   const isOpen =
     isEditAvatarPopupOpen ||
     isEditProfilePopupOpen ||
@@ -170,18 +177,21 @@ function App() {
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onLoading={isLoading}
+            onCloseOverlay={closeByOverlay}
           />
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onUpdateUser={handleUpdateUser}
             onClose={closeAllPopups}
             onLoading={isLoading}
+            onCloseOverlay={closeByOverlay}
           />
           <EditAvatarPopup
             onUpdateAvatar={handleUpdateAvatar}
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onLoading={isLoading}
+            onCloseOverlay={closeByOverlay}
           />
           <PopupConfirmation
             onClose={closeAllPopups}
@@ -189,9 +199,11 @@ function App() {
             onCardDelete={handleCardDelete}
             onLoading={isLoading}
             card={deletedCard}
+            onCloseOverlay={closeByOverlay}
           />
 
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <ImagePopup card={selectedCard} onClose={closeAllPopups}
+          onCloseOverlay={closeByOverlay} />
         </div>
       </div>
     </CurrentUserContext.Provider>

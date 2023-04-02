@@ -53,6 +53,28 @@ function App() {
     setSelectedCard({})
   }
 
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    isConfirmationPopupOpen ||
+    selectedCard.link
+
+  useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups()
+      }
+    }
+    if (isOpen) {
+      // навешиваем только при открытии
+      document.addEventListener("keydown", closeByEscape)
+      return () => {
+        document.removeEventListener("keydown", closeByEscape)
+      }
+    }
+  }, [isOpen])
+
   function handleUpdateAvatar(newAvatar) {
     setIsLoading(true)
     api

@@ -11,7 +11,7 @@ function Main({
   onCardClick,
   onCardLike,
   onDeletedCard,
-  onConfirmationPopup
+  onConfirmationPopup,
 }) {
   const currentUser = React.useContext(CurrentUserContext)
 

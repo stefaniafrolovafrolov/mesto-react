@@ -9,7 +9,7 @@
 - JAVASCRIPT
 - useEffect
 - подключение к серверу в React
-- Route
+- Routes
 
 ## Дальнейшие планы на улучшение проекта:
 

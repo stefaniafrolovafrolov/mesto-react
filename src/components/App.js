@@ -9,7 +9,14 @@ import AddPlacePopup from "./AddPlacePopup"
 import PopupConfirmation from "./PopupConfirmation"
 import ImagePopup from "./ImagePopup"
 import api from "../utils/Api"
+import { Route, Switch, Redirect, useHistory } from "react-router-dom"
 import Footer from "./Footer"
+import Register from "./Register"
+import ProtectedRoute from "./ProtectedRoute"
+import Login from "./Login"
+import * as auth from "../utils/auth"
+import InfoToolTip from "./InfoToolTip"
+
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
@@ -21,6 +28,12 @@ function App() {
   const [currentUser, setCurrentUser] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [cards, setCards] = useState([])
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [email, setEmail] = useState("")
+  const history = useHistory()
+  const [isInfoToolTipPopupOpen, setInfoToolTipPopupOpen] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     api
@@ -51,12 +64,13 @@ function App() {
     setIsConfirmationPopupOpen(false)
     setDeletedCard({})
     setSelectedCard({})
+    setInfoToolTipPopupOpen(false)
   }
 
   function closeByOverlay(evt) {
     if (evt.target === evt.currentTarget) {
       console.log("gggggggggggg")
-      closeAllPopups();
+      closeAllPopups()
     }
   }
 
@@ -81,6 +95,26 @@ function App() {
       }
     }
   }, [isOpen])
+
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt")
+
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          setIsLoggedIn(true)
+          setEmail(res.data.email)
+          history.push("/")
+        })
+        .catch((err) => {
+          if (err.status === 401) {
+            console.log("401 — Токен не передан или передан не в том формате")
+          }
+          console.log("401 — Переданный токен некорректен")
+        })
+    }
+  }, [history])
 
   function handleUpdateAvatar(newAvatar) {
     setIsLoading(true)
@@ -156,22 +190,97 @@ function App() {
       .finally(() => setIsLoading(false))
   }
 
+  function handleRegisterSubmit(email, password) {
+    auth
+      .register(email, password)
+      .then((res) => {
+        setInfoToolTipPopupOpen(true)
+        setIsSuccess(true)
+        history.push("/sign-in")
+      })
+      .catch((err) => {
+        if (err.status === 400) {
+          console.log("400 - некорректно заполнено одно из полей")
+        }
+        setInfoToolTipPopupOpen(true)
+        setIsSuccess(false)
+      })
+  }
+
+  function handleLoginSubmit(email, password) {
+    auth
+      .login(email, password)
+      .then((res) => {
+        localStorage.setItem("jwt", res.token)
+        setIsLoggedIn(true)
+        setEmail(email)
+        history.push("/")
+      })
+      .catch((err) => {
+        if (err.status === 400) {
+          console.log("400 - не передано одно из полей")
+        } else if (err.status === 401) {
+          console.log("401 - пользователь с email не найден")
+        }
+      })
+  }
+
+  function handleSignOut() {
+    localStorage.removeItem("jwt")
+    setIsLoggedIn(false)
+    setIsMobileMenuOpen(false)
+    history.push("/sign-in")
+    setIsMobileMenuOpen(false)
+  }
+
+  function handleClickOpenMobileMenu() {
+    if (isLoggedIn) {
+      setIsMobileMenuOpen(!isMobileMenuOpen)
+    }
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
+    
       <div className="root">
         <div className="page">
-          <Header />
-          <Main
-            onEditProfile={setIsEditProfilePopupOpen}
-            onEditAvatar={setIsEditAvatarPopupOpen}
-            onAddPlace={setIsAddPlacePopupOpen}
-            onConfirmationPopup={setIsConfirmationPopupOpen}
-            onDeletedCard={setDeletedCard}
-            onCardClick={setSelectedCard}
-            onCardLike={handleCardLike}
-            cards={cards}
+          <Header
+            email={email}
+            onSignOut={handleSignOut}
+            isMobileMenuOpen={isMobileMenuOpen}
+            handleClickOpenMobileMenu={handleClickOpenMobileMenu}
+            isLoggedIn={isLoggedIn}
           />
-          <Footer />
+
+          <Switch>
+            <ProtectedRoute
+              exact
+              path="/"
+              isLoggedIn={isLoggedIn}
+              onEditProfile={setIsEditProfilePopupOpen}
+              onEditAvatar={setIsEditAvatarPopupOpen}
+              onConfirmationPopup={setIsConfirmationPopupOpen}
+              onDeletedCard={setDeletedCard}
+              onAddPlace={setIsAddPlacePopupOpen}
+              onCardClick={setSelectedCard}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              cards={cards}
+              component={Main}
+              isLoading={isLoading}
+            />
+            <Route path="/sign-in">
+              <Login onLogin={handleLoginSubmit} />
+            </Route>
+            <Route path="/sign-up">
+              <Register onRegister={handleRegisterSubmit} />
+            </Route>
+            <Route>
+              {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+            </Route>
+          </Switch>
+
+          {isLoggedIn && <Footer />}
           <AddPlacePopup
             onAddPlace={handleAddPlaceSubmit}
             isOpen={isAddPlacePopupOpen}
@@ -202,10 +311,20 @@ function App() {
             onCloseOverlay={closeByOverlay}
           />
 
-          <ImagePopup card={selectedCard} onClose={closeAllPopups}
-          onCloseOverlay={closeByOverlay} />
+          <ImagePopup
+            card={selectedCard}
+            onClose={closeAllPopups}
+            onCloseOverlay={closeByOverlay}
+          />
+
+          <InfoToolTip
+            isOpen={isInfoToolTipPopupOpen}
+            onClose={closeAllPopups}
+            isSuccess={isSuccess}
+          />
         </div>
       </div>
+     
     </CurrentUserContext.Provider>
   )
 }

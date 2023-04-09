@@ -5,6 +5,8 @@
 @import url("./blocks/root/root.css");
 
 @import url("./blocks/page/page.css");
+@import url("./blocks/page/__profile/page__profile.css");
+@import url("./blocks/page/__profile/_hidden/page__profile_hidden.css");
 
 @import url("./blocks/content/content.css");
 
@@ -61,5 +63,51 @@
 @import url("./blocks/popup/_type/popup__input_type_error.css");
 @import url("./blocks/popup/_disabled/popup__save_disabled.css");
 @import url("./blocks/popup/__save/_valid/popup__save_valid.css");
+
+@import url("./blocks/popup/__tooltip/_image/popup__tooltip_image.css");
+@import url("./blocks/popup/__tooltip/_message/popup__tooltip_message.css");
+@import url("./blocks/popup/__content/popup__content.css");
+@import url("./blocks/popup/__content/_content_image/popup__content_content_image.css");
+
+
+@import url("./blocks/auth/auth.css");
+@import url("./blocks/auth/__form-input/auth__form-input.css");
+@import url("./blocks/auth/__form-submit-btn/auth__form-submit-btn.css");
+@import url("./blocks/auth/__form-submit-btn/_size/auth__form-submit-btn_size.css");
+@import url("./blocks/auth/__form/auth__form.css");
+@import url("./blocks/auth/__signup/auth__signup.css");
+@import url("./blocks/auth/__signup/_link/auth__signup_link.css");
+@import url("./blocks/auth/__signup/_text/auth__signup_text.css");
+@import url("./blocks/auth/__title/auth__title.css");
+
+@import url("./blocks/loader/loader.css");
+
+@import url("./blocks/mobile-menu/mobile-menu.css");
+@import url("./blocks/mobile-menu/__email/mobile-menu__email.css");
+@import url("./blocks/mobile-menu/__exit/mobile-menu__exit.css");
+@import url("./blocks/mobile-menu/_opened/mobile-menu_opened.css");
+
+@import url("./blocks.css");
+
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+@import url("./blocks.css");
+
 
 @import url("./blocks/rotation/rotation.css");

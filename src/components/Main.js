@@ -1,23 +1,21 @@
 import React from "react"
 import CurrentUserContext from "../contexts/CurrentUserContext"
 import Card from "./Card"
+import Loader from "./Loader"
 import profileEditAvatar from "../images/profile__edit-avatar.svg"
 
-function Main({
-  cards,
-  onEditProfile,
-  onAddPlace,
-  onEditAvatar,
-  onCardClick,
-  onCardLike,
-  onDeletedCard,
-  onConfirmationPopup,
-}) {
+function Main(props) {
   const currentUser = React.useContext(CurrentUserContext)
 
   return (
     <main className="content">
-      <section className="profile">
+      {props.isLoading && <Loader />}
+
+      <section
+        className={`profile page__profile ${
+          props.isLoading && "page__profile_hidden"
+        }`}
+      >
         <div className="profile__container">
           <div className="profile__wrapper-relative">
             <img
@@ -29,7 +27,7 @@ function Main({
               className="profile__edit-avatar"
               type="button"
               onClick={() => {
-                onEditAvatar(true)
+                props.onEditAvatar(true)
               }}
             >
               <img
@@ -47,7 +45,7 @@ function Main({
             className="profile__edit-button"
             type="button"
             onClick={() => {
-              onEditProfile(true)
+              props.onEditProfile(true)
             }}
           ></button>
           <p className="profile__subtitle">{currentUser.about}</p>
@@ -56,19 +54,19 @@ function Main({
           className="profile__add-button"
           type="button"
           onClick={() => {
-            onAddPlace(true)
+            props.onAddPlace(true)
           }}
         ></button>
       </section>
       <section className="elements">
-        {cards.map((card) => (
+        {props.cards.map((card) => (
           <Card
             card={card}
             key={card._id}
-            onCardDelete={onDeletedCard}
-            onCardClick={onCardClick}
-            onCardLike={onCardLike}
-            onConfirmationPopup={onConfirmationPopup}
+            onCardDelete={props.onDeletedCard}
+            onCardClick={props.onCardClick}
+            onCardLike={props.onCardLike}
+            onConfirmationPopup={props.onConfirmationPopup}
           />
         ))}
       </section>
